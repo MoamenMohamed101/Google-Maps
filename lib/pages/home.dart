@@ -11,6 +11,18 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   var myMarkers = HashSet<Marker>();
+  BitmapDescriptor? bitmapDescriptor;
+
+  get() async {
+    bitmapDescriptor = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration.empty, 'assets/images/pin.png');
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    get();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,34 +34,44 @@ class _HomeState extends State<Home> {
         alignment: Alignment.topCenter,
         children: [
           GoogleMap(
+            // num1
             initialCameraPosition: const CameraPosition(
                 target: LatLng(30.044465775068417, 31.2357085440791), zoom: 15),
-            //num1
+            //num2
             onMapCreated: (GoogleMapController googleMapController) {
               setState(() {
                 myMarkers.add(
-                  const Marker(
-                    markerId: MarkerId('0'),
-                    position: LatLng(30.044465775068417, 31.2357085440791),
+                  Marker(
+                    markerId: const MarkerId('0'),
+                    position:
+                        const LatLng(30.044465775068417, 31.2357085440791),
+                    infoWindow: const InfoWindow(
+                        title: 'ميدان الكوسميات',
+                        snippet: 'المؤسس بهجت صابر لدعم كل مظلوم'),
+                    onTap: () {
+                      print('bahgt saber');
+                    },
+                    // num3
+                    //icon: bitmapDescriptor!,
                   ),
                 );
               });
             },
             markers: myMarkers,
           ),
-          const SizedBox(
-            height: 150,
-            child: Image(
-              image: AssetImage('assets/images/hacker.png'),
-            ),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: const Text(
-              'Lets play on Google Maps',
-              style: TextStyle(fontSize: 30, color: Colors.black),
-            ),
-          )
+          // const SizedBox(
+          //   height: 150,
+          //   child: Image(
+          //     image: AssetImage('assets/images/hacker.png'),
+          //   ),
+          // ),
+          // Container(
+          //   alignment: Alignment.bottomCenter,
+          //   child: const Text(
+          //     'Lets play on Google Maps',
+          //     style: TextStyle(fontSize: 30, color: Colors.black),
+          //   ),
+          // )
         ],
       ),
     );
